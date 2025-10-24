@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mon Style - Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to right, #fdf6f0, #f2e8dc);
+      color: #4e3b31;
+    }
+
+    header {
+      background-color: #f5efe6;
+      padding: 60px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    /* Animation comme l'autre page */
+    @keyframes titleAnimation {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      50% {
+        opacity: 0.5;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      color: #5a3e36;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      animation: titleAnimation 2s ease-in-out;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 0;
+      margin: 0;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #5a3e36;
+      font-weight: bold;
+      padding: 8px 14px;
+      border-radius: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .content {
+      padding: 40px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .content h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #a67c52;
+    }
+
+    .content p {
+      font-size: 1.1rem;
+      color: #5e463b;
+      margin-bottom: 40px;
+    }
+
+    .services {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .service-item {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .service-item img {
+      width: 100%;
+      max-width: 350px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: scale(0.8);
+      animation: zoomIn 1s ease-out forwards, fadeInUp 1s ease-out forwards;
+    }
+
+    .service-text {
+      flex: 1;
+    }
+
+    .service-text h3 {
+      color: #5a3e36;
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+
+    .service-text p {
+      color: #4e3b31;
+      line-height: 1.6;
+    }
+
+    footer {
+      background-color: #a67c52;
+      color: #fdf6f0;
+      text-align: center;
+      padding: 20px;
+      margin-top: 60px;
+    }
+
+    /* Animations */
+    @keyframes zoomIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+     @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .service-item {
+        flex-direction: column;
+      }
+
+      .content h2 {
+        font-size: 1.6rem;
+      }
+
+      .service-text h3 {
+        font-size: 1.3rem;
+      }
+    }
+    .service-item img {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: scale(0.8);
+  animation: zoomIn 1s ease-out forwards, fadeInUp 1s ease-out forwards;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  will-change: transform;
+}
+
+.service-item img:hover {
+  transform: scale(1.05) rotateZ(1deg);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+  </style>
+</head>
+<body id="nos-services">
+
+  <header>
+    <h1>Services</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="Nos Action.html">Actions</a></li>
+        <li><a href="lookbook.html">Look</a></li>
+        <li><a href="avant etapres.html">Avant / Après</a></li>
+        <li><a href="boutique.html">Boutique</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="mon avis.html">Avis</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="content">
+    <h2>Votre Style, Votre Signature</h2>
+    <p>Parce que votre style est le reflet de votre personnalité, je vous accompagne pour le révéler avec élégance et authenticité. Mes services personnalisés pour vous :</p>
+    
+    <div class="services">
+      <div class="service-item">
+        <img src="image/consultation.jpg" alt="Analyse de style personnalisée" />
+        <div class="service-text">
+          <h3>Analyse de style personnalisée</h3>
+          <p>Grâce à une approche détaillée, j’analyse vos préférences, votre morphologie, et vos objectifs. Je vous aide à comprendre ce qui vous va le mieux, pour que chaque tenue reflète votre personnalité.</p>
+        </div>
+      </div>
+
+      <div class="service-item">
+        <img src="image/garde de robe.jpg" alt="Tri et optimisation de garde-robe" />
+        <div class="service-text">
+          <h3>Tri et optimisation de garde-robe</h3>
+          <p>Fini le stress du matin ! Je vous aide à faire le tri dans votre garde-robe, à garder les essentiels et à optimiser vos tenues avec les pièces que vous possédez déjà.</p>
+        </div>
+      </div>
+
+      <div class="service-item">
+        <img src="image/shopping.jpg" alt="Accompagnement shopping" />
+        <div class="service-text">
+          <h3>Accompagnement shopping</h3>
+          <p>Que vous ayez un budget précis ou non, je vous guide dans vos achats en ligne ou en magasin, pour trouver des pièces qui correspondent à vos besoins et à votre style.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Mon Style – Tous droits réservés</p>
+  </footer>
+
+</body>
+</html>

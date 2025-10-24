@@ -1,0 +1,188 @@
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      background-color: #fdf6f0;
+      color: #5a3e36;
+    }
+  
+    header {
+       background-color: rgba(245, 239, 230, 0.9);
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      backdrop-filter: blur(4px);
+    }
+  
+
+  
+    @keyframes titleAnimation {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      50% {
+        opacity: 0.5;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  
+    header h1 {
+       font-size: 2.8rem;
+      color: #5a3e36;
+      margin-bottom: 20px;
+      animation: titleAnimation 1s ease-out;
+    }
+  
+    nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      padding: 0;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+  
+    nav ul li a {
+      text-decoration: none;
+      color: #5a3e36;
+      font-weight: bold;
+      padding: 8px 14px;
+      border-radius: 20px;
+      transition: background-color 0.3s ease;
+    }
+  
+    nav ul li a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  
+    .before-after-section {
+      padding: 50px 20px;
+      text-align: center;
+    }
+  
+    .before-after-section h2 {
+      font-size: 2.2rem;
+      color: #a67c52;
+      margin-bottom: 20px;
+    }
+  
+    .before-after-section .intro {
+      font-size: 1.1rem;
+      color: #5a3e36;
+      margin-bottom: 40px;
+    }
+  
+    /* NOUVELLE ORGANISATION DES IMAGES */
+    .ba-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+  
+    .ba-card {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      width: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  
+    .ba-images img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+  
+    .ba-images img:hover {
+      transform: scale(1.05);
+    }
+  
+    .ba-card p {
+      font-size: 1rem;
+      color: #777;
+      margin-top: 15px;
+    }
+  
+    footer {
+      background-color: #a67c52;
+      color: #fdf6f0;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+  </style>
+  
+  </head>
+  <body id="avantetapres">
+  
+    <header>
+      <h1>Transformations de Style</h1>
+      <nav>
+        <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="Nos Action.html">Actions</a></li>
+            <li><a href="lookbook.html">Look</a></li>
+            <li><a href="avant etapres.html">Avant / Après</a></li>
+            <li><a href="boutique.html">Boutique</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="mon avis.html">Avis</a></li>
+        </ul>
+      </nav>
+    </header>
+  
+    <section class="before-after-section">
+      <h2>Découvrez l'impact d'un relooking personnalisé</h2>
+      <p class="intro">Quelques exemples concrets de changements de look réalisés avec mes clients :</p>
+  
+      <div class="ba-grid">
+        <div class="ba-card">
+          <div class="ba-images">
+            <img src="image/avant et apres.jpg" alt="Avant et après 1">
+          </div>
+          <p>Une touche d’élégance moderne avec des accessoires bien choisis pour sublimer son quotidien.</p>
+        </div>
+  
+        <div class="ba-card">
+          <div class="ba-images">
+            <img src="image/avant et apres5.jpg" alt="Avant et après 2">
+          </div>
+          <p>Look professionnel et structuré pour réussir ses entretiens avec confiance.</p>
+        </div>
+  
+        <div class="ba-card">
+          <div class="ba-images">
+            <img src="image/avant et apres1.jpg" alt="Avant et après 3">
+          </div>
+          <p>L’élégance au service de vos ambitions professionnelles.</p>
+        </div>
+  
+        <div class="ba-card">
+          <div class="ba-images">
+            <img src="image/avant et apres2.jpg" alt="Avant et après 4">
+          </div>
+          <p>Une touche d’élégance moderne avec des accessoires bien choisis pour sublimer son quotidien.</p>
+        </div>
+  
+       
+    </section>
+  
+    <footer>
+      <p>© 2025 - Transformations de Style</p>
+    </footer>
+  
+  </body>
+  </html>
+  
