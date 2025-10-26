@@ -313,25 +313,49 @@
       transform: translateY(-1px);
     }
 
-    /* Star Rating */
+    /* Star Rating - Version corrigée */
     .star-rating {
       display: flex;
       justify-content: center;
-      gap: 5px;
+      gap: 8px;
       margin: 15px 0;
     }
 
     .star {
-      font-size: 2rem;
+      font-size: 2.5rem;
       color: #ddd;
       cursor: pointer;
       transition: var(--transition);
+      padding: 5px;
+      border-radius: 50%;
     }
 
-    .star:hover,
+    .star:hover {
+      transform: scale(1.2);
+      background: rgba(255, 215, 0, 0.1);
+    }
+
     .star.active {
       color: #ffd700;
       transform: scale(1.1);
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    .star.selected {
+      color: #ffd700;
+      transform: scale(1.15);
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+    }
+
+    /* Animation pour la sélection */
+    @keyframes starPop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1.15); }
+    }
+
+    .star.selected {
+      animation: starPop 0.3s ease-out;
     }
 
     /* Footer */
@@ -615,14 +639,10 @@
             <span class="star" data-rating="4">⭐</span>
             <span class="star" data-rating="5">⭐</span>
           </div>
-          <select id="note" name="note" required style="display: none;">
-            <option value="">Choisissez une note</option>
-            <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
-            <option value="4">⭐⭐⭐⭐ (Très bien)</option>
-            <option value="3">⭐⭐⭐ (Bien)</option>
-            <option value="2">⭐⭐ (Moyen)</option>
-            <option value="1">⭐ (À améliorer)</option>
-          </select>
+          <input type="hidden" id="note" name="note" value="" required>
+          <div id="selectedRating" style="margin-top: 10px; font-weight: 500; color: var(--secondary-color); min-height: 24px;">
+            <!-- Texte de la note sélectionnée apparaîtra ici -->
+          </div>
         </div>
 
         <div class="form-group">
@@ -676,34 +696,65 @@
         });
       }
 
-      // Star Rating System
+      // Star Rating System - Version corrigée
       const stars = document.querySelectorAll('.star');
-      const noteSelect = document.getElementById('note');
+      const noteInput = document.getElementById('note');
+      const selectedRatingDiv = document.getElementById('selectedRating');
       let currentRating = 0;
 
-      stars.forEach((star, index) => {
+      // Texte pour chaque note
+      const ratingTexts = {
+        1: "⭐ - À améliorer",
+        2: "⭐⭐ - Moyen", 
+        3: "⭐⭐⭐ - Bien",
+        4: "⭐⭐⭐⭐ - Très bien",
+        5: "⭐⭐⭐⭐⭐ - Excellent"
+      };
+
+      stars.forEach((star) => {
         star.addEventListener('click', function() {
           currentRating = parseInt(this.dataset.rating);
           updateStars(currentRating);
-          noteSelect.value = currentRating;
+          noteInput.value = currentRating;
+          
+          // Afficher le texte de la note sélectionnée
+          selectedRatingDiv.textContent = ratingTexts[currentRating];
+          selectedRatingDiv.style.opacity = '0';
+          selectedRatingDiv.style.transform = 'translateY(-10px)';
+          
+          setTimeout(() => {
+            selectedRatingDiv.style.transition = 'all 0.3s ease';
+            selectedRatingDiv.style.opacity = '1';
+            selectedRatingDiv.style.transform = 'translateY(0)';
+          }, 10);
+          
+          // Validation visuelle
+          noteInput.classList.remove('error');
+          const errorMessage = document.querySelector('.error-message');
+          if (errorMessage) errorMessage.remove();
         });
 
         star.addEventListener('mouseenter', function() {
           const rating = parseInt(this.dataset.rating);
-          updateStars(rating);
+          updateStars(rating, false);
         });
       });
 
       document.getElementById('starRating').addEventListener('mouseleave', function() {
-        updateStars(currentRating);
+        updateStars(currentRating, true);
       });
 
-      function updateStars(rating) {
+      function updateStars(rating, isSelected = true) {
         stars.forEach((star, index) => {
-          if (index < rating) {
+          const starRating = parseInt(star.dataset.rating);
+          
+          star.classList.remove('active', 'selected');
+          
+          if (starRating <= rating) {
             star.classList.add('active');
-          } else {
-            star.classList.remove('active');
+            if (isSelected && starRating === rating) {
+              star.classList.add('selected');
+            }
           }
         });
       }
@@ -740,6 +791,8 @@
             avisForm.reset();
             currentRating = 0;
             updateStars(0);
+            selectedRatingDiv.textContent = '';
+            noteInput.value = '';
           }, 2000);
         });
 
@@ -813,9 +866,13 @@
       if (!validateField(nom)) isValid = false;
       if (!validateField(email)) isValid = false;
       if (!validateField(message)) isValid = false;
-      if (note.value === '') {
-        showErrorMessage(note, 'Veuillez sélectionner une note');
+      
+      // Validation spécifique pour la note
+      if (note.value === '' || note.value === '0') {
+        showNoteError();
         isValid = false;
+      } else {
+        hideNoteError();
       }
       
       return isValid;
@@ -851,6 +908,31 @@
       return isValid;
     }
 
+    function showNoteError() {
+      const starContainer = document.getElementById('starRating');
+      const existingError = starContainer.parentNode.querySelector('.error-message');
+      
+      if (!existingError) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = 'Veuillez sélectionner une note avec les étoiles';
+        errorDiv.style.color = '#e74c3c';
+        errorDiv.style.fontSize = '0.85rem';
+        errorDiv.style.marginTop = '8px';
+        errorDiv.style.animation = 'slideDown 0.3s ease-out';
+        
+        starContainer.parentNode.appendChild(errorDiv);
+      }
+    }
+
+    function hideNoteError() {
+      const starContainer = document.getElementById('starRating');
+      const existingError = starContainer.parentNode.querySelector('.error-message');
+      if (existingError) {
+        existingError.remove();
+      }
+    }
+
     // Show error message
     function showErrorMessage(field, message) {
       const errorDiv = document.createElement('div');
@@ -874,14 +956,13 @@
 
     // Show success message
     function showSuccessMessage() {
-      const form = document.getElementById('avisForm');
+      const form = document.querySelector('.avis-form');
       const successDiv = document.createElement('div');
       successDiv.className = 'success-message';
-      successDiv.innerHTML = '✅ Merci pour votre avis ! Votre retour nous aide à améliorer nos services.';
-      
+      successDiv.textContent = 'Merci pour votre avis ! 💖 Votre message a bien été envoyé.';
       form.appendChild(successDiv);
-      
-      // Remove success message after 5 seconds
+
+      // Disparaît après quelques secondes
       setTimeout(() => {
         successDiv.remove();
       }, 5000);
@@ -916,27 +997,6 @@
       
       lastScrollTop = scrollTop;
     });
-        // Remove error message
-    function removeErrorMessage(field) {
-      const existingError = field.parentNode.querySelector('.error-message');
-      if (existingError) {
-        existingError.remove();
-      }
-    }
-
-    // Show success message
-    function showSuccessMessage() {
-      const form = document.querySelector('.avis-form');
-      const successDiv = document.createElement('div');
-      successDiv.className = 'success-message';
-      successDiv.textContent = 'Merci pour votre avis ! 💖 Votre message a bien été envoyé.';
-      form.appendChild(successDiv);
-
-      // Disparaît après quelques secondes
-      setTimeout(() => {
-        successDiv.remove();
-      }, 5000);
-    }
   </script>
 </body>
 </html>
