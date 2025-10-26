@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Donner votre avis - Mon Style</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <form id="avisForm" action="send_avis.php" method="post"></form>
+  <form id="avisForm" action="https://formspree.io/f/your-form-id" method="POST"></form>
   <style>
     * {
       margin: 0;
@@ -997,6 +999,55 @@
       
       lastScrollTop = scrollTop;
     });
+    avisForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  // Validate form
+  if (!validateForm()) {
+    return;
+  }
+
+  // Show loading state
+  submitBtn.classList.add('loading');
+  submitBtn.textContent = 'Envoi en cours...';
+  submitBtn.disabled = true;
+
+  // Récupérer les données du formulaire
+  const formData = new FormData(avisForm);
+
+  // Envoyer les données via Fetch
+  fetch('send_avis.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (response.ok) {
+      return response.text();
+    } else {
+      throw new Error('Erreur réseau');
+    }
+  })
+  .then(data => {
+    // Succès
+    showSuccessMessage();
+    avisForm.reset();
+    currentRating = 0;
+    updateStars(0);
+    selectedRatingDiv.textContent = '';
+    noteInput.value = '';
+  })
+  .catch(error => {
+    // Erreur
+    alert('Une erreur est survenue. Veuillez réessayer.');
+    console.error('Erreur:', error);
+  })
+  .finally(() => {
+    // Retirer l'état de chargement
+    submitBtn.classList.remove('loading');
+    submitBtn.textContent = 'Envoyer mon avis';
+    submitBtn.disabled = false;
+  });
+});
   </script>
 </body>
 </html>
