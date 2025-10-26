@@ -567,6 +567,31 @@
         --text-light: #b8a082;
       }
     }
+    .rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.stars {
+  display: flex;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.star {
+  font-size: 25px;
+  color: #ccc;
+  transition: color 0.2s;
+}
+
+.star.active,
+.star:hover,
+.star:hover ~ .star {
+  color: gold;
+}
+
   </style>
 </head>
 <body>
@@ -606,24 +631,18 @@
           <input type="email" id="email" name="email" placeholder="votre@email.com" required>
         </div>
 
-        <div class="form-group">
-          <label for="note">Note :</label>
-          <div class="star-rating" id="starRating">
-            <span class="star" data-rating="1">⭐</span>
-            <span class="star" data-rating="2">⭐</span>
-            <span class="star" data-rating="3">⭐</span>
-            <span class="star" data-rating="4">⭐</span>
-            <span class="star" data-rating="5">⭐</span>
-          </div>
-          <select id="note" name="note" required style="display: none;">
-            <option value="">Choisissez une note</option>
-            <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
-            <option value="4">⭐⭐⭐⭐ (Très bien)</option>
-            <option value="3">⭐⭐⭐ (Bien)</option>
-            <option value="2">⭐⭐ (Moyen)</option>
-            <option value="1">⭐ (À améliorer)</option>
-          </select>
-        </div>
+       <div class="rating">
+  <label>Note :</label>
+  <div class="stars">
+    <span class="star" data-value="1">★</span>
+    <span class="star" data-value="2">★</span>
+    <span class="star" data-value="3">★</span>
+    <span class="star" data-value="4">★</span>
+    <span class="star" data-value="5">★</span>
+  </div>
+  <input type="hidden" id="rating" name="rating" value="0">
+</div>
+
 
         <div class="form-group">
           <label for="message">Votre avis :</label>
@@ -916,6 +935,27 @@
       
       lastScrollTop = scrollTop;
     });
+        // Remove error message
+    function removeErrorMessage(field) {
+      const existingError = field.parentNode.querySelector('.error-message');
+      if (existingError) {
+        existingError.remove();
+      }
+    }
+
+    // Show success message
+    function showSuccessMessage() {
+      const form = document.querySelector('.avis-form');
+      const successDiv = document.createElement('div');
+      successDiv.className = 'success-message';
+      successDiv.textContent = 'Merci pour votre avis ! 💖 Votre message a bien été envoyé.';
+      form.appendChild(successDiv);
+
+      // Disparaît après quelques secondes
+      setTimeout(() => {
+        successDiv.remove();
+      }, 5000);
+    }
   </script>
 </body>
 </html>
