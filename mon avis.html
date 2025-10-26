@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Donner votre avis - Mon Style</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <form id="avisForm" action="send_avis.php" method="post"></form>
-  <form id="avisForm" action="https://formspree.io/f/your-form-id" method="POST"></form>
   <style>
     * {
       margin: 0;
@@ -567,6 +565,14 @@
       }
     }
 
+    /* Error Message */
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.85rem;
+      margin-top: 5px;
+      animation: slideDown 0.3s ease-out;
+    }
+
     /* Performance Optimizations */
     .avis-form {
       will-change: transform;
@@ -621,7 +627,7 @@
   <div class="form-container">
     <section class="avis-form">
       <h2>Votre avis compte !</h2>
-      <form id="avisForm" action="#" method="post">
+      <form id="avisForm" action="send_avis.php" method="POST">
         <div class="form-group">
           <label for="nom">Nom complet :</label>
           <input type="text" id="nom" name="nom" placeholder="Votre nom complet" required>
@@ -779,23 +785,44 @@
           submitBtn.textContent = 'Envoi en cours...';
           submitBtn.disabled = true;
           
-          // Simulate form submission (replace with actual form handling)
-          setTimeout(() => {
-            // Remove loading state
+          // Récupérer les données du formulaire
+          const formData = new FormData(avisForm);
+          
+          // Envoyer les données via Fetch
+          fetch('send_avis.php', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Erreur réseau: ' + response.status);
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.success) {
+              // Succès
+              showSuccessMessage();
+              avisForm.reset();
+              currentRating = 0;
+              updateStars(0);
+              selectedRatingDiv.textContent = '';
+            } else {
+              // Erreur du serveur
+              throw new Error(data.message || 'Erreur lors de l\'envoi');
+            }
+          })
+          .catch(error => {
+            // Erreur réseau ou serveur
+            console.error('Erreur:', error);
+            alert('Erreur: ' + error.message);
+          })
+          .finally(() => {
+            // Retirer l'état de chargement
             submitBtn.classList.remove('loading');
             submitBtn.textContent = 'Envoyer mon avis';
             submitBtn.disabled = false;
-            
-            // Show success message
-            showSuccessMessage();
-            
-            // Reset form
-            avisForm.reset();
-            currentRating = 0;
-            updateStars(0);
-            selectedRatingDiv.textContent = '';
-            noteInput.value = '';
-          }, 2000);
+          });
         });
 
         // Real-time validation
@@ -836,24 +863,6 @@
         form.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(form);
       }
-
-      // Preload critical resources
-      function preloadCriticalResources() {
-        const criticalImages = [
-          'image/cc.jpg'
-        ];
-
-        criticalImages.forEach(src => {
-          const link = document.createElement('link');
-          link.rel = 'preload';
-          link.as = 'image';
-          link.href = src;
-          document.head.appendChild(link);
-        });
-      }
-
-      // Initialize preloading
-      preloadCriticalResources();
     });
 
     // Form validation function
@@ -999,55 +1008,6 @@
       
       lastScrollTop = scrollTop;
     });
-    avisForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-
-  // Validate form
-  if (!validateForm()) {
-    return;
-  }
-
-  // Show loading state
-  submitBtn.classList.add('loading');
-  submitBtn.textContent = 'Envoi en cours...';
-  submitBtn.disabled = true;
-
-  // Récupérer les données du formulaire
-  const formData = new FormData(avisForm);
-
-  // Envoyer les données via Fetch
-  fetch('send_avis.php', {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
-    if (response.ok) {
-      return response.text();
-    } else {
-      throw new Error('Erreur réseau');
-    }
-  })
-  .then(data => {
-    // Succès
-    showSuccessMessage();
-    avisForm.reset();
-    currentRating = 0;
-    updateStars(0);
-    selectedRatingDiv.textContent = '';
-    noteInput.value = '';
-  })
-  .catch(error => {
-    // Erreur
-    alert('Une erreur est survenue. Veuillez réessayer.');
-    console.error('Erreur:', error);
-  })
-  .finally(() => {
-    // Retirer l'état de chargement
-    submitBtn.classList.remove('loading');
-    submitBtn.textContent = 'Envoyer mon avis';
-    submitBtn.disabled = false;
-  });
-});
   </script>
 </body>
 </html>
